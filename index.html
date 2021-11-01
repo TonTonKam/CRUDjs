@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Formulaire avec liste</title>
+</head>
+<body>
+    <div class="contenaire">
+        <div class="formulaire">
+            <div class="groupInput">
+                <div class="group">
+                    <label for="">Prénom</label><input type="text" id="prenom" placeholder="Prenom">
+                </div>
+                <div class="group">
+                    <label for="">Nom</label><input type="text" id="nom" placeholder="Nom">
+                </div>
+                <div class="group">
+                    <label for=""></label>Email<input type="text" id="email" placeholder="Email">
+                </div>
+                <div class="group">
+                    <label for=""></label>Téléphone<input type="text" id="tel" placeholder="Telephone">
+                </div>
+            </div>
+            <button id="ajouter">Ajouter</button>
+        </div>
+        <div class="list" id="list">
+            <span>Liste d'étudiants</span>
+            <table>
+                <thead>
+                    <tr>
+                        <hr>
+                        <th>Id</th>
+                        <th>Prenom</th>
+                        <th>Nom</th>
+                        <th>Email</th>
+                        <th>Telephone</th>
+                        <th colspan="2"></th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </div>
+
+
+    <!-- script -->
+    <script src="script.js"></script>
+</body>
+</html>

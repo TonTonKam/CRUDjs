@@ -1,0 +1,41 @@
+body{
+    font-size: 18px;
+    background-color: rgb(180,180,180);
+}
+.contenaire{
+    padding: 1%;
+}
+.formulaire{
+    padding: 1%;
+}
+.groupInput{
+    display: inline;
+}
+.group{
+    display: inline-block;
+    margin: 5px 1em 5px 0;
+    width: 48%;
+}
+input{
+    width: 100%;
+}
+.list{
+    padding: 1em;
+}
+span{
+    font-weight: bold;
+    font-size: 2em;
+}
+table{
+    width: 90%;
+}
+th{
+    width: 15%;
+}
+hr{
+    clear: both;
+}
+td{
+    border-top: 1px solid #777;
+    width: 10%;
+}
