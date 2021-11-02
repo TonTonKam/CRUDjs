@@ -129,7 +129,6 @@ function refreshList() {
     let nombreTr = document.querySelectorAll('tr');
     console.log(nombreTr.length);
     console.log(listeUtilisateurs.length);
-    console.log(nombreTr[0]);
     if(listeUtilisateurs.length == (nombreTr.length)){
         let valueTableau = 0; 
         while (valueTableau < listeUtilisateurs.length) {
@@ -163,11 +162,11 @@ function ajouterLigne(user) {
     
     let allLine = document.querySelectorAll('.addLine');
     for (let j = ajoutElement; j < (allLine.length + nombreLine); j++) {
-        allLine[0] = allLine[(ajoutElement + 0)].textContent = user.id;
-        allLine[1] = allLine[(ajoutElement + 1)].textContent = user.prenom;
-        allLine[2] =  allLine[(ajoutElement + 2)].textContent = user.nom;
-        allLine[3] =  allLine[(ajoutElement + 3)].textContent = user.email;
-        allLine[4] =  allLine[(ajoutElement + 4)].textContent = user.tel;
+        allLine[(ajoutElement + 0)].textContent = user.id;
+        allLine[(ajoutElement + 1)].textContent = user.prenom;
+        allLine[(ajoutElement + 2)].textContent = user.nom;
+        allLine[(ajoutElement + 3)].textContent = user.email;
+        allLine[(ajoutElement + 4)].textContent = user.tel;
     }
 }
 
