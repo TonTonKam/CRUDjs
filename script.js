@@ -14,6 +14,11 @@ let compteur = 0;
 let nombreLine = 6;
 let compteLine = -1;
 
+//test
+let user = new Utilisateur("ted", "marco", "polo", 12, 52);
+let user1 = new Utilisateur("ted1", "marco", "polo", '12@mach', 52);
+let user2 = new Utilisateur("ted2", "marco", "polo", '12@fit', 52);
+listeUtilisateurs = [user, user1, user2];
 //eventListener
 bouton.addEventListener("click", function () {
     /**
@@ -56,10 +61,7 @@ function refreshHtmlList(){
 };
 
 //cellule de test
-// let user = new Utilisateur("ted", "marco", "polo", 12, 52);
-// let user1 = new Utilisateur("ted1", "marco", "polo", '12@mach', 52);
-// let user2 = new Utilisateur("ted2", "marco", "polo", '12@fit', 52);
-// listeUtilisateurs = [user, user1, user2];
+
 
 function ajouterUtilisateur() {
     /**
@@ -71,18 +73,22 @@ function ajouterUtilisateur() {
     //1er input
     if(inputSaisi[j].value != "" && inputSaisi[j].value != " " && inputSaisi[j].value != null){
         j++;
+        inputSaisi[j].style.backgroundColor = 'white';
 
         //2e input
         if(inputSaisi[j].value != "" && inputSaisi[j].value != " " && inputSaisi[j].value != null){
             j++;
+            inputSaisi[j].style.backgroundColor = 'white';
             
             //3e input
             if(inputSaisi[j].value != "" && inputSaisi[j].value != " " && inputSaisi[j].value != null
             && verifierEmail(listeUtilisateurs) == true ){
                 j++;
-                
+                inputSaisi[j].style.backgroundColor = 'white';
+
                 //4e input
                 if(inputSaisi[j].value != "" && inputSaisi[j].value != " " && inputSaisi[j].value != null){
+                    inputSaisi[j].style.backgroundColor = 'white';
                     //on ajoute 1 a l'id
                     compteur++;
                     user = new Utilisateur(compteur, inputSaisi[0].value, inputSaisi[1].value,
@@ -126,49 +132,58 @@ function ajouterUtilisateur() {
 
 function refreshList() {
     //je prend le nombre de ligne deja cree
-    let nombreTr = document.querySelectorAll('tr');
-    console.log(nombreTr.length);
-    console.log(listeUtilisateurs.length);
-    console.log(nombreTr[0]);
-    if(listeUtilisateurs.length == (nombreTr.length)){
-        let valueTableau = 0; 
-        while (valueTableau < listeUtilisateurs.length) {
-            ajouterLigne(listeUtilisateurs[valueTableau]);
-            valueTableau++
-        }
-    }
+    
+    // let valueTableau = 0; 
+    // while (valueTableau < listeUtilisateurs.length) {
+    //     ajouterLigne(listeUtilisateurs[valueTableau]);
+    //     valueTableau++
+    // }
+    ajouterLigne(listeUtilisateurs[0]);
+    
 }
 
 //cellule de test
 
 function ajouterLigne(user) {
-    compteLine++;
-    let ajoutElement = (compteLine * nombreLine);
+    // compteLine++;
+    // let ajoutElement = (compteLine * nombreLine);
     
-    let ligne = document.createElement('tr');
-    for (let i = 0; i < 5; i++) {
-        let cellule = document.createElement('td');
-        cellule.classList.add('addLine');
-        ligne.append(cellule);
-    }
-    let iconeModif = document.createElement('td');
-    iconeModif.classList.add('boutonModif');
-    let iconeSuppr = document.createElement('td');
-    iconeSuppr.classList.add('addLine');
-    ligne.append(iconeModif);
-    ligne.append(iconeSuppr);
+    // let ligne = document.createElement('tr');
+    // for (let i = 0; i < 5; i++) {
+    //     let cellule = document.createElement('td');
+    //     cellule.classList.add('addLine');
+    //     ligne.append(cellule);
+    // }
+    // let iconeModif = document.createElement('td');
+    // iconeModif.classList.add('boutonModif');
+    // let iconeSuppr = document.createElement('td');
+    // iconeSuppr.classList.add('addLine');
+    // ligne.append(iconeModif);
+    // ligne.append(iconeSuppr);
 
-    //integration de la ligne dans le tbody
-    document.querySelector('tbody').appendChild(ligne);
+    // //integration de la ligne dans le tbody
+    // document.querySelector('tbody').appendChild(ligne);
     
-    let allLine = document.querySelectorAll('.addLine');
-    for (let j = ajoutElement; j < (allLine.length + nombreLine); j++) {
-        allLine[0] = allLine[(ajoutElement + 0)].textContent = user.id;
-        allLine[1] = allLine[(ajoutElement + 1)].textContent = user.prenom;
-        allLine[2] =  allLine[(ajoutElement + 2)].textContent = user.nom;
-        allLine[3] =  allLine[(ajoutElement + 3)].textContent = user.email;
-        allLine[4] =  allLine[(ajoutElement + 4)].textContent = user.tel;
-    }
+    // let allLine = document.querySelectorAll('.addLine');
+    // // for (let j = ajoutElement; j < (allLine.length + nombreLine); j++) {
+    //     allLine[0] = allLine[(ajoutElement + 0)].textContent = user.id;
+    //     allLine[1] = allLine[(ajoutElement + 1)].textContent = user.prenom;
+    //     allLine[2] =  allLine[(ajoutElement + 2)].textContent = user.nom;
+    //     allLine[3] =  allLine[(ajoutElement + 3)].textContent = user.email;
+    //     allLine[4] =  allLine[(ajoutElement + 4)].textContent = user.tel;
+    // // }
+
+    let table = document.querySelector('.table');
+    let newLine = table.insertRow();
+    let compteur = (table.rows.length-1);
+
+    newLine.insertCell(0).innerHTML = compteur;
+    newLine.insertCell(1).innerHTML = user.prenom;
+    newLine.insertCell(2).innerHTML = user.nom;
+    newLine.insertCell(3).innerHTML = user.email;
+    newLine.insertCell(4).innerHTML = user.tel;
+    newLine.insertCell(5).innerHTML = "<i class='bi bi-pencil-square' id='"+compteur+"' onclick='modif(this);'></i>";
+    newLine.insertCell(6).innerHTML = "<i class='bi bi-trash'></i>";
 }
 
 //cellule de test
