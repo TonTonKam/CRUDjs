@@ -27,9 +27,9 @@ bouton.addEventListener("click", function () {
      */
     if(boutonResult == true){
         //j'ajoute des utilisateurs
-        console.log(listeUtilisateurs.length);
+        console.log(listeUtilisateurs.length + ' listeUtilisateurs.length');
         ajouterUtilisateur()
-        refreshHtmlList();
+        clearTr();
         refreshList();
     }else{
         //je modifie des utilisateurs
@@ -46,7 +46,9 @@ function Utilisateur(id, prenom, nom, email, tel){
 }
 
 //default
-refreshHtmlList();
+;(function (){
+    refreshHtmlList();
+})();
 // liste de fonctions
 
 /**
@@ -57,6 +59,7 @@ function refreshHtmlList(){
         document.getElementById('list').style.display = 'none';
     }else{
         document.getElementById('list').style.display = 'inline';
+        refreshList();
     }
 };
 
@@ -82,45 +85,46 @@ function ajouterUtilisateur() {
             
             //3e input
             if(inputSaisi[j].value != "" && inputSaisi[j].value != " " && inputSaisi[j].value != null
-            && verifierEmail(listeUtilisateurs) == true ){
+            && verifierEmail(listeUtilisateurs, inputSaisi[j].value) == true ){
                 j++;
                 inputSaisi[j].style.backgroundColor = 'white';
 
                 //4e input
                 if(inputSaisi[j].value != "" && inputSaisi[j].value != " " && inputSaisi[j].value != null){
                     inputSaisi[j].style.backgroundColor = 'white';
-                    //on ajoute 1 a l'id
+                    //on ajoute 1 a l'id si liste est vide
                     compteur++;
                     user = new Utilisateur(compteur, inputSaisi[0].value, inputSaisi[1].value,
                         inputSaisi[2].value, inputSaisi[3].value);
                     listeUtilisateurs.push(user);
                     return user;
+                    
                 }else{
                     inputSaisi[j].style.backgroundColor = 'red';
                     // alert("Vous n'avez rien saisi dans le champs prévu pour! Qu'est que vous attendez"+
                     //     "pour le remplir?!")
-                    console.log("vague tel");
+                    console.log("erreur tel");
                     return false
                 }
             }else{
                 inputSaisi[j].style.backgroundColor = 'red';
                 // alert("Vous n'avez rien saisi dans le champs prévu pour! Qu'est que vous attendez"+
                 //     "pour le remplir?!")
-                console.log("vague email");
+                console.log("erreur email");
                 return false
             }
         }else{
             inputSaisi[j].style.backgroundColor = 'red';
             // alert("Vous n'avez rien saisi dans le champs prévu pour! Qu'est que vous attendez"+
             //     "pour le remplir?!")
-            console.log("vague nom");
+            console.log("erreur nom");
             return false
         }
     }else{
         inputSaisi[j].style.backgroundColor = 'red';
         // alert("Vous n'avez rien saisi dans le champs prévu pour! Qu'est que vous attendez"+
         //     "pour le remplir?!")
-        console.log("vague prenom");
+        console.log("erreur prenom");
         return false
     }
 }
@@ -129,49 +133,22 @@ function ajouterUtilisateur() {
  * je verifie si il y a un tableau, si il y a un tableau alors
  * je verif la longueur du tableau et je créé une ligne par objet qu'il contient
  */
-
 function refreshList() {
     //je prend le nombre de ligne deja cree
-    
-    // let valueTableau = 0; 
-    // while (valueTableau < listeUtilisateurs.length) {
-    //     ajouterLigne(listeUtilisateurs[valueTableau]);
-    //     valueTableau++
-    // }
-    ajouterLigne(listeUtilisateurs[0]);
-    
+    listeUtilisateurs.forEach(element => {
+        ajouterLigne(element);
+    });
 }
 
-//cellule de test
+//clear la liste de tr
+function clearTr() {
+    let nbLigne = document.querySelectorAll('tr');
+    for (let i = 1; i < nbLigne.length; i++) {
+        nbLigne[i].remove();
+    }
+}
 
 function ajouterLigne(user) {
-    // compteLine++;
-    // let ajoutElement = (compteLine * nombreLine);
-    
-    // let ligne = document.createElement('tr');
-    // for (let i = 0; i < 5; i++) {
-    //     let cellule = document.createElement('td');
-    //     cellule.classList.add('addLine');
-    //     ligne.append(cellule);
-    // }
-    // let iconeModif = document.createElement('td');
-    // iconeModif.classList.add('boutonModif');
-    // let iconeSuppr = document.createElement('td');
-    // iconeSuppr.classList.add('addLine');
-    // ligne.append(iconeModif);
-    // ligne.append(iconeSuppr);
-
-    // //integration de la ligne dans le tbody
-    // document.querySelector('tbody').appendChild(ligne);
-    
-    // let allLine = document.querySelectorAll('.addLine');
-    // // for (let j = ajoutElement; j < (allLine.length + nombreLine); j++) {
-    //     allLine[0] = allLine[(ajoutElement + 0)].textContent = user.id;
-    //     allLine[1] = allLine[(ajoutElement + 1)].textContent = user.prenom;
-    //     allLine[2] =  allLine[(ajoutElement + 2)].textContent = user.nom;
-    //     allLine[3] =  allLine[(ajoutElement + 3)].textContent = user.email;
-    //     allLine[4] =  allLine[(ajoutElement + 4)].textContent = user.tel;
-    // // }
 
     let table = document.querySelector('.table');
     let newLine = table.insertRow();
@@ -187,27 +164,15 @@ function ajouterLigne(user) {
 }
 
 //cellule de test
-function verifierEmail(liste) {
+function verifierEmail(liste, valeurDiff) {
+    console.log(liste[0].email);
+    console.log(valeurDiff);
     if(liste != ""){
-        let listEmail = [];
-        let j = 0;
-
-        liste.forEach(element => {
-            listEmail.push(element.email);
-        });
-        if(j != listEmail.length){
-            /**
-             * je fais une boucle pour verifier toutes les valeurs
-             */
-            while(listEmail[j] != inputSaisi[2].value && j <= listEmail.length){
-                j++;
-                if(j == (listEmail.length)){
-                    return true;
-                }
+        for (let i = 0; i < liste.length; i++) {
+            if(valeurDiff == liste[i].email){
+                console.log(i + ' i');
+                return false;
             }
-        }else{
-            console.log("a atteind la longueur de la liste");
-            return true;
         }
     }else{
         console.log("n'a pas de liste a verifier");
