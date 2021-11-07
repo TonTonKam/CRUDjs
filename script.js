@@ -39,7 +39,11 @@ bouton.addEventListener("click", function () {
          * je modifie le contenu du tableau
          * j'actualise la liste
          */
-        console.log('salut');
+        modifierUtilisateur();
+        clearTr();
+        refreshList();
+        bouton.textContent = 'Ajouter';
+        boutonResult = true;
     }
 });
 
@@ -195,7 +199,9 @@ for (let i = 0; i < modif.length; i++) {
          */
         boutonResult = false;
         bouton.textContent = 'Editer';
+        bouton.value = i;
         afficheSelection(selectionnerUtilisateur(i));
+
     }, false);
 }
 
@@ -224,10 +230,15 @@ function afficheSelection(params) {
     inputSaisi[3].value = params.tel;
 }
 
-function modifierUtilisateur(user){
+function modifierUtilisateur(){
+    let indValue = bouton.value;
+    let user = new Utilisateur(indValue, inputSaisi[0].value, inputSaisi[1].value,
+        inputSaisi[2].value, inputSaisi[3].value);
     console.log(user);
+    listeUtilisateurs[indValue] = user;
+
 }
 
-function supprimerUtilisateur(tab, user) {
-    tab.splice(user);
+function supprimerUtilisateur(user) {
+    listeUtilisateursCopie.splice(user);
 }
