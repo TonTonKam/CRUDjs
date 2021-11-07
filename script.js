@@ -3,7 +3,12 @@
  * - 1 bouton "ajouter"
  * - 1 icone "editer"
  * - 1 icone "supprimer"
+ * 
+ * bug : quand j'ajoute des elements, les actions de 'modif' et 'suppr' ne fonctionnent
+ * plus.
+ * les actions de 'modif' et de 'suppr' n'impact pas 'ajouter'
  */
+
 
 //attributs
 let inputSaisi = document.querySelectorAll('input');
@@ -12,12 +17,11 @@ let boutonResult = true;
 let listeUtilisateurs = [];
 let listeUtilisateursCopie = [];
 let compteur = 0;
-let tempo;
 
 //test
-let user = new Utilisateur("ted", "marco", "polo", '12@test', 52);
-let user1 = new Utilisateur("ted1", "marco", "polo", '12@mach', 52);
-let user2 = new Utilisateur("ted2", "marco", "polo", '12@fit', 52);
+let user = new Utilisateur(0, "marco", "polo", '12@test', 52);
+let user1 = new Utilisateur(1, "marco", "polo", '12@mach', 52);
+let user2 = new Utilisateur(2, "marco", "polo", '12@fit', 52);
 listeUtilisateurs = [user, user1, user2];
 listeUtilisateursCopie = listeUtilisateurs;
 //eventListener
@@ -43,9 +47,10 @@ bouton.addEventListener("click", function () {
         clearTr();
         refreshList();
         bouton.textContent = 'Ajouter';
+        bouton.value = "";
         boutonResult = true;
     }
-});
+}, false);
 
 //constructeur
 function Utilisateur(id, prenom, nom, email, tel){
@@ -161,7 +166,7 @@ function clearTr() {
 
 function ajouterLigne(user) {
 
-    let table = document.querySelector('.table');
+    let table = document.querySelector('tbody');
     let newLine = table.insertRow();
     let compteur = (table.rows.length-1);
 
@@ -210,10 +215,9 @@ for (let i = 0; i < modif.length; i++) {
 let suppr = document.querySelectorAll('.suppr');
 for (let j = 0; j < suppr.length; j++) {
     suppr[j].addEventListener('click', function () {
-        supprimerUtilisateur(listeUtilisateursCopie, selectionnerUtilisateur(j));
-        // clearTr();
-        // refreshList();
+        // supprimerUtilisateur(selectionnerUtilisateur(j));
         console.log(listeUtilisateursCopie);
+        clearTr();
         refreshList();
 
     }, false);
@@ -224,8 +228,8 @@ function selectionnerUtilisateur(index) {
 }
 
 function afficheSelection(params) {
-    inputSaisi[0].value = params.nom; 
-    inputSaisi[1].value = params.prenom; 
+    inputSaisi[0].value = params.prenom; 
+    inputSaisi[1].value = params.nom; 
     inputSaisi[2].value = params.email; 
     inputSaisi[3].value = params.tel;
 }
@@ -234,9 +238,7 @@ function modifierUtilisateur(){
     let indValue = bouton.value;
     let user = new Utilisateur(indValue, inputSaisi[0].value, inputSaisi[1].value,
         inputSaisi[2].value, inputSaisi[3].value);
-    console.log(user);
     listeUtilisateurs[indValue] = user;
-
 }
 
 function supprimerUtilisateur(user) {
