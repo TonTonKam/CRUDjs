@@ -11,8 +11,6 @@ let bouton = document.getElementById('ajouter');
 let boutonResult = true;
 let listeUtilisateurs = [];
 let compteur = 0;
-let nombreLine = 6;
-let compteLine = -1;
 
 //test
 let user = new Utilisateur("ted", "marco", "polo", 12, 52);
@@ -165,19 +163,21 @@ function ajouterLigne(user) {
 
 //cellule de test
 function verifierEmail(liste, valeurDiff) {
-    console.log(liste[0].email);
-    console.log(valeurDiff);
     if(liste != ""){
+        console.log(liste[0].email);
+        console.log(valeurDiff);
         for (let i = 0; i < liste.length; i++) {
+            
             if(valeurDiff == liste[i].email){
                 console.log(i + ' i');
                 return false;
             }
         }
-    }else{
-        console.log("n'a pas de liste a verifier");
-        return true;
     }
+    // else{
+    //     console.log("n'a pas de liste a verifier");
+    //     return true;
+    // }
 }
 
 function modifierUtilisateur() {
