@@ -3,20 +3,27 @@
  * - 1 bouton "ajouter"
  * - 1 icone "editer"
  * - 1 icone "supprimer"
+ * 
+ * bug : quand j'ajoute des elements, les actions de 'modif' et 'suppr' ne fonctionnent
+ * plus.
+ * les actions de 'modif' et de 'suppr' n'impact pas 'ajouter'
  */
+
 
 //attributs
 let inputSaisi = document.querySelectorAll('input');
 let bouton = document.getElementById('ajouter');
 let boutonResult = true;
 let listeUtilisateurs = [];
+let listeUtilisateursCopie = [];
 let compteur = 0;
 
 //test
-let user = new Utilisateur("ted", "marco", "polo", 12, 52);
-let user1 = new Utilisateur("ted1", "marco", "polo", '12@mach', 52);
-let user2 = new Utilisateur("ted2", "marco", "polo", '12@fit', 52);
+let user = new Utilisateur(0, "marco", "polo", '12@test', 52);
+let user1 = new Utilisateur(1, "marco", "polo", '12@mach', 52);
+let user2 = new Utilisateur(2, "marco", "polo", '12@fit', 52);
 listeUtilisateurs = [user, user1, user2];
+listeUtilisateursCopie = listeUtilisateurs;
 //eventListener
 bouton.addEventListener("click", function () {
     /**
@@ -25,14 +32,25 @@ bouton.addEventListener("click", function () {
      */
     if(boutonResult == true){
         //j'ajoute des utilisateurs
-        console.log(listeUtilisateurs.length + ' listeUtilisateurs.length');
+        console.log(listeUtilisateursCopie.length + ' listeUtilisateursCopie.length');
         ajouterUtilisateur()
         clearTr();
         refreshList();
     }else{
         //je modifie des utilisateurs
+        /**
+         * je prend le contenue des input
+         * je modifie le contenu du tableau
+         * j'actualise la liste
+         */
+        modifierUtilisateur();
+        clearTr();
+        refreshList();
+        bouton.textContent = 'Ajouter';
+        bouton.value = "";
+        boutonResult = true;
     }
-});
+}, false);
 
 //constructeur
 function Utilisateur(id, prenom, nom, email, tel){
@@ -53,7 +71,7 @@ function Utilisateur(id, prenom, nom, email, tel){
  * affichage de la liste dans le Html quand la listeUtilisateur n'est pas vide
  */
 function refreshHtmlList(){
-    if(listeUtilisateurs == ""){
+    if(listeUtilisateursCopie == ""){
         document.getElementById('list').style.display = 'none';
     }else{
         document.getElementById('list').style.display = 'inline';
@@ -83,7 +101,7 @@ function ajouterUtilisateur() {
             
             //3e input
             if(inputSaisi[j].value != "" && inputSaisi[j].value != " " && inputSaisi[j].value != null
-            && verifierEmail(listeUtilisateurs, inputSaisi[j].value) == true ){
+            && verifierEmail(listeUtilisateursCopie, inputSaisi[j].value) != false ){
                 j++;
                 inputSaisi[j].style.backgroundColor = 'white';
 
@@ -94,7 +112,7 @@ function ajouterUtilisateur() {
                     compteur++;
                     user = new Utilisateur(compteur, inputSaisi[0].value, inputSaisi[1].value,
                         inputSaisi[2].value, inputSaisi[3].value);
-                    listeUtilisateurs.push(user);
+                    listeUtilisateursCopie.push(user);
                     return user;
                     
                 }else{
@@ -133,9 +151,41 @@ function ajouterUtilisateur() {
  */
 function refreshList() {
     //je prend le nombre de ligne deja cree
-    listeUtilisateurs.forEach(element => {
+    listeUtilisateursCopie.forEach(element => {
         ajouterLigne(element);
     });
+
+    // ajout des addEventListener sur les td 
+//modif
+let modif = document.querySelectorAll('.modif');
+for (let i = 0; i < modif.length; i++) {
+    modif[i].addEventListener('click', function () {
+         /**
+         * quand je clic sur une ligne
+         * je prend l'id du tableau html
+         * je les inserts dans les imputs
+         * et je reinject dans le tableau la nouvelle valeur
+         */
+        boutonResult = false;
+        bouton.textContent = 'Editer';
+        bouton.value = i;
+        afficheSelection(selectionnerUtilisateur(i));
+
+    }, false);
+}
+
+//-------------------------------------
+//suppr
+let suppr = document.querySelectorAll('.suppr');
+for (let j = 0; j < suppr.length; j++) {
+    suppr[j].addEventListener('click', function () {
+        // supprimerUtilisateur(selectionnerUtilisateur(j));
+        console.log(listeUtilisateursCopie);
+        clearTr();
+        refreshList();
+
+    }, false);
+}
 }
 
 //clear la liste de tr
@@ -148,7 +198,7 @@ function clearTr() {
 
 function ajouterLigne(user) {
 
-    let table = document.querySelector('.table');
+    let table = document.querySelector('tbody');
     let newLine = table.insertRow();
     let compteur = (table.rows.length-1);
 
@@ -157,21 +207,17 @@ function ajouterLigne(user) {
     newLine.insertCell(2).innerHTML = user.nom;
     newLine.insertCell(3).innerHTML = user.email;
     newLine.insertCell(4).innerHTML = user.tel;
-    newLine.insertCell(5).innerHTML = "<i class='bi bi-pencil-square' id='"+compteur+"' onclick='modif(this);'></i>";
-    newLine.insertCell(6).innerHTML = "<i class='bi bi-trash'></i>";
+    newLine.insertCell(5).className = 'modif';
+    newLine.insertCell(6).className = 'suppr';
 }
 
-//cellule de test
 function verifierEmail(liste, valeurDiff) {
-    if(liste != ""){
-        console.log(liste[0].email);
-        console.log(valeurDiff);
-        for (let i = 0; i < liste.length; i++) {
-            
-            if(valeurDiff == liste[i].email){
-                console.log(i + ' i');
-                return false;
-            }
+    /** 
+     * le probleme est que la valeur est indefini en sorti
+    */
+    for (let i = 0; i < liste.length; i++) {
+        if(valeurDiff === liste[i].email){
+            return false;
         }
     }
     // else{
@@ -180,10 +226,27 @@ function verifierEmail(liste, valeurDiff) {
     // }
 }
 
-function modifierUtilisateur() {
-    
+//cellule de test
+
+
+function selectionnerUtilisateur(index) {
+    return listeUtilisateursCopie[index];
 }
 
-function supprimerUtilisateur() {
-    
+function afficheSelection(params) {
+    inputSaisi[0].value = params.prenom; 
+    inputSaisi[1].value = params.nom; 
+    inputSaisi[2].value = params.email; 
+    inputSaisi[3].value = params.tel;
+}
+
+function modifierUtilisateur(){
+    let indValue = bouton.value;
+    let user = new Utilisateur(indValue, inputSaisi[0].value, inputSaisi[1].value,
+        inputSaisi[2].value, inputSaisi[3].value);
+    listeUtilisateurs[indValue] = user;
+}
+
+function supprimerUtilisateur(user) {
+    listeUtilisateursCopie.splice(user);
 }

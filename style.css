@@ -39,3 +39,13 @@ td{
     border-top: 1px solid #777;
     width: 10%;
 }
+.modif{
+    content: "\270F";
+    cursor: pointer;
+    background-color: seagreen;
+}
+.suppr{
+    cursor: pointer;
+    content: "\274C";
+    background-color: salmon;
+}
